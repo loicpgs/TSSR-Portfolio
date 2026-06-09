@@ -87,7 +87,7 @@ Les comptes d'administration sont distincts des comptes utilisateurs quotidiens.
 | Compte         | Fonction                                 |
 | -------------- | ---------------------------------------- |
 | adm.lpages     | Administration du domaine                |
-| adm.pmartin    | Administration systèmes                  |
+| adm.pmichel    | Administration systèmes                  |
 | adm.mdupont    | Administration support et infrastructure |
 
 Cette séparation permet de réduire les risques liés à l'utilisation quotidienne de comptes à privilèges élevés.
