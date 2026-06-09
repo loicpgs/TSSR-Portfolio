@@ -1,66 +1,99 @@
-\# Utilisateurs du laboratoire
 
 
 
-\## Direction
+# Utilisateurs du laboratoire
 
+## Présentation
 
+Afin de reproduire un environnement d'entreprise réaliste, plusieurs comptes utilisateurs ont été créés dans l'annuaire Active Directory. Ces comptes sont répartis selon leur appartenance métier et intégrés aux groupes de sécurité correspondants.
 
-\* Pierre Martin
+---
 
-\* Sophie Bernard
+## Direction
 
+| Nom             | Fonction                  |
+| --------------- | ------------------------- |
+| Pierre Martin   | Directeur Général         |
+| Sophie Bernard  | Directrice Administrative |
+| Marc Girard     | Directeur Financier       |
+| Olivier Renault | Directeur des Programmes  |
 
+---
 
-\## Ressources Humaines
+## Ressources Humaines
 
+| Nom          | Fonction        |
+| ------------ | --------------- |
+| Marie Dupont | Responsable RH  |
+| Julie Robert | Chargée RH      |
+| Claire Simon | Gestionnaire RH |
 
+---
 
-\* Marie Dupont
+## Finance
 
-\* Julie Robert
+| Nom           | Fonction              |
+| ------------- | --------------------- |
+| Thomas Leroy  | Responsable Financier |
+| Claire Moreau | Comptable             |
+| Nicolas Petit | Contrôleur de Gestion |
 
+---
 
+## Bureau d'Études
 
-\## Finance
+| Nom            | Fonction                |
+| -------------- | ----------------------- |
+| Lucas Petit    | Ingénieur Systèmes      |
+| Antoine Durand | Ingénieur Développement |
+| Camille Roux   | Ingénieure Intégration  |
+| Mathieu Benoit | Architecte Technique    |
 
+---
 
+## Production
 
-\* Thomas Leroy
+| Nom               | Fonction               |
+| ----------------- | ---------------------- |
+| Julien Garcia     | Responsable Production |
+| Hugo Mercier      | Technicien Intégration |
+| Paul Blanc        | Technicien Validation  |
+| Alexandre Garnier | Technicien Assemblage  |
 
-\* Claire Moreau
+---
 
+## Informatique
 
+| Nom            | Fonction                             |
+| -------------- | ------------------------------------ |
+| Loïc Pages     | Administrateur Systèmes et Réseaux   |
+| Pierre Michel  | Technicien Systèmes                  |
+| Mathieu Dupont | Technicien Support et Infrastructure |
 
-\## Bureau d'Études
+---
 
+## Comptes privilégiés
 
+Conformément aux recommandations de sécurité Microsoft, ANSSI et CIS, les opérations d'administration sont réalisées à l'aide de comptes dédiés distincts des comptes utilisateurs quotidiens.
 
-\* Lucas Petit
+| Compte         | Utilisation                              |
+| -------------- | ---------------------------------------- |
+| adm.lpages     | Administration du domaine                |
+| adm.pmichel    | Administration systèmes                  |
+| adm.mdupont    | Administration support et infrastructure |
 
-\* Antoine Durand
+---
 
-\* Camille Roux
+## Répartition des effectifs
 
+| Service             | Nombre d'utilisateurs |
+| ------------------- | --------------------- |
+| Direction           | 4                     |
+| Ressources Humaines | 3                     |
+| Finance             | 3                     |
+| Bureau d'Études     | 4                     |
+| Production          | 4                     |
+| Informatique        | 3                     |
+| Comptes privilégiés | 3                     |
 
-
-\## Production
-
-
-
-\* Julien Garcia
-
-\* Hugo Mercier
-
-
-
-\## Informatique
-
-
-
-\* Loïc Pages
-
-\* Admin Griffon
-
-
-
+**Total : 24 comptes Active Directory déployés dans le laboratoire Griffon.**
