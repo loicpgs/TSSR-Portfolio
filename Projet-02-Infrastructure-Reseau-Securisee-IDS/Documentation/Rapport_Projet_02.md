@@ -154,23 +154,27 @@ Résultat :
 
 ### Configuration du routeur
 
-![Configuration IP](Captures/02-Configuration-IP.png)
+![02 - Configuration IP](Captures/02-Configuration IP.png)
 
 ### Mise en place du NAT
 
-![NAT](Captures/04-Mise-en-place-du-NAT.png)
+![04 - Mise en place du NAT](Captures/04-Mise en place du NAT.png)
 
 ### Configuration du Firewall
 
-![Firewall](Captures/05-Configuration-du-Firewall.png)
+![05 - Configuration du Firewall](Captures/05-Configuration du Firewall.png)
 
 ### Détection Suricata
 
-![Suricata](Captures/23-Observation-des-alertes.jpg)
+![23 - Observation des alertes](Captures/23-Observation des alertes (ET SCAN).jpg)
+
+![24 - Observation des alertes DNS](Captures/24-Observation des alertes (Requête DNS).jpg)
 
 ### Dashboard Grafana
 
-![Grafana](Captures/28-Volumes-d-alertes.jpg)
+![27 - Loki Grafana](Captures/27-Visualisation Loki-Grafana.jpg)
+
+![28 - Volume d'alertes](Captures/28-Volumes d'alertes.jpg)
 
 ---
 
