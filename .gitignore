@@ -1,0 +1,54 @@
+﻿# Windows
+Thumbs.db
+Desktop.ini
+
+# Logs
+*.log
+
+# Fichiers temporaires
+*.tmp
+*.bak
+
+# Exports GPO
+*.cab
+
+# Rapports GPO et GPResult
+gpresult*.html
+GPOReport*.html
+
+# PowerShell
+*.ps1xml
+
+# VS Code
+.vscode/
+
+# Hyper-V
+*.vhd
+*.vhdx
+*.avhdx
+*.vmcx
+*.vmrs
+
+# Images ISO
+*.iso
+
+# Archives
+*.zip
+*.7z
+*.rar
+
+# Sauvegardes
+Backup/
+Backups/
+
+# Certificats et clés
+*.pfx
+*.pem
+*.key
+*.crt
+
+# Terraform
+.terraform/
+
+# Linux
+*.swp
