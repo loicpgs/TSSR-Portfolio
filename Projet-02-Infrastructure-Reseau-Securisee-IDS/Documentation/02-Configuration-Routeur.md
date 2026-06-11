@@ -5,17 +5,17 @@
 ## Vérification des interfaces réseau
 
 La première étape consiste à vérifier les interfaces réseau présentes sur le serveur Debian. Pour cela, la commande suivante est utilisée :
-
+```bash
 ip a
-
+```
 Cette commande permet d'identifier les interfaces disponibles, leurs adresses IP ainsi que leur état de fonctionnement.
 
 ## Configuration IP
 
 La configuration réseau du routeur est définie dans le fichier :
-
+```bash
 /etc/network/interfaces
-
+```
 Deux interfaces ont été configurées :
 
 * Une interface WAN permettant la connexion au réseau externe et configurée en DHCP.
