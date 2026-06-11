@@ -1,15 +1,14 @@
-
 # TSSR Portfolio
 
 ## Présentation
 
 Bienvenue sur mon portfolio technique réalisé dans le cadre de la préparation du titre professionnel **Technicien Supérieur Systèmes et Réseaux (TSSR)**.
 
-Ce dépôt regroupe plusieurs projets d'infrastructure systèmes, réseaux et sécurité conçus au sein d'un environnement de laboratoire personnel.
+Ce dépôt regroupe plusieurs projets d'infrastructure systèmes, réseaux et sécurité réalisés au sein d'un environnement de laboratoire personnel.
 
-L'objectif de ce portfolio est de démontrer mes compétences en administration systèmes, administration réseaux, automatisation PowerShell, cybersécurité et documentation technique.
+L'objectif de ce portfolio est de démontrer mes compétences en administration systèmes et réseaux, cybersécurité, automatisation, supervision et documentation technique.
 
-Les différents projets présentés reproduisent des scénarios réalistes inspirés des problématiques rencontrées dans les environnements professionnels.
+Les projets présentés reproduisent des scénarios réalistes inspirés des environnements professionnels et mettent en œuvre des technologies largement utilisées dans les infrastructures modernes.
 
 ---
 
@@ -28,18 +27,20 @@ Les différents projets présentés reproduisent des scénarios réalistes inspi
 
 * Routage IP
 * VLAN
-* VPN
+* VPN Site-à-Site
 * Firewalling
-* Services réseau
+* Segmentation réseau
 * Architecture multisites
 
 ### Administration Linux
 
 * Debian
-* Samba
+* OpenSSH
+* Docker
+* Apache Guacamole
+* Portainer
 * Gestion des services
 * Administration système
-* Gestion des permissions
 
 ### Automatisation
 
@@ -52,10 +53,19 @@ Les différents projets présentés reproduisent des scénarios réalistes inspi
 
 * Durcissement système
 * Modèle AGDLP
+* Gestion des comptes privilégiés
 * Journalisation et audit
 * Recommandations ANSSI
 * Benchmarks CIS
 * Principe du moindre privilège
+
+### Supervision
+
+* Prometheus
+* Grafana
+* Node Exporter
+* Collecte de métriques
+* Création de tableaux de bord
 
 ---
 
@@ -63,85 +73,78 @@ Les différents projets présentés reproduisent des scénarios réalistes inspi
 
 ### Projet 01 – Infrastructure Active Directory Sécurisée Griffon
 
-Conception et déploiement d'une infrastructure Active Directory complète sous Windows Server 2022.
+Conception et déploiement d'une infrastructure Active Directory complète sous Windows Server 2022 inspirée des bonnes pratiques Microsoft, CIS et ANSSI.
 
 #### Technologies
 
+* Windows Server 2022
 * Active Directory Domain Services
 * DNS
-* GPO
+* Group Policy Management
 * PowerShell
 * Hyper-V
 
 #### Compétences démontrées
 
 * Administration Active Directory
-* Gestion des utilisateurs et groupes
-* Mise en œuvre du modèle AGDLP
-* Déploiement de stratégies de groupe
+* Gestion des identités et des accès
+* Modèle AGDLP
+* Gestion des groupes et permissions
+* Déploiement de GPO
 * Durcissement de l'infrastructure
-* Comptes privilégiés
+* Administration sécurisée
 * Documentation technique
 
 ---
 
-### Projet 02 – Infrastructure Réseau Multisites
+### Projet 02 – Infrastructure Réseau Multisites Sécurisée
 
-Conception d'une architecture réseau simulant plusieurs sites géographiques interconnectés.
+Conception d'une architecture réseau simulant plusieurs sites géographiques interconnectés au travers d'un VPN Site-à-Site.
 
 #### Technologies
 
 * Hyper-V
 * pfSense
-* VPN Site-à-Site
-* Routage
+* VPN IPsec
 * VLAN
+* Routage
 
 #### Compétences démontrées
 
-* Segmentation réseau
+* Architecture réseau
+* Segmentation des flux
 * Routage inter-sites
 * Sécurisation des communications
 * Administration des équipements réseau
 
 ---
 
-### Projet 03 – Infrastructure Linux Samba
+### Projet 03 – Bastion d’Administration et Supervision Centralisée
 
-Déploiement et administration d'un serveur Linux Debian fournissant des services de partage de fichiers.
+Conception et déploiement d'une plateforme centralisée d'administration permettant l'accès sécurisé aux systèmes Linux et Windows ainsi que la supervision de l'infrastructure.
 
 #### Technologies
 
-* Debian Linux
-* Samba
-* SSH
-* Services réseau
+* Debian
+* Docker
+* Apache Guacamole
+* Portainer
+* OpenSSH
+* UFW
+* Prometheus
+* Node Exporter
+* Grafana
 
 #### Compétences démontrées
 
 * Administration Linux
-* Gestion des utilisateurs
-* Gestion des permissions
-* Partages réseau
-
----
-
-### Projet 04 – Supervision et Monitoring
-
-Déploiement d'une solution de supervision permettant le suivi de l'état de santé de l'infrastructure.
-
-#### Technologies
-
-* Prometheus
-* Grafana
-* Exporters Windows et Linux
-
-#### Compétences démontrées
-
-* Supervision système
-* Collecte de métriques
-* Création de tableaux de bord
-* Analyse des performances
+* Conteneurisation Docker
+* Gestion des accès distants
+* Administration centralisée
+* Supervision d'infrastructure
+* Sécurisation des services
+* Monitoring et analyse de performances
+* Documentation technique
 
 ---
 
@@ -150,11 +153,11 @@ Déploiement d'une solution de supervision permettant le suivi de l'état de san
 | Domaine             | Technologies                                    |
 | ------------------- | ----------------------------------------------- |
 | Systèmes Microsoft  | Windows Server 2022, Active Directory, DNS, GPO |
-| Systèmes Linux      | Debian, Samba, SSH                              |
+| Systèmes Linux      | Debian, Docker, OpenSSH, Guacamole              |
 | Réseau              | pfSense, VPN, VLAN, Routage                     |
 | Automatisation      | PowerShell                                      |
 | Virtualisation      | Hyper-V                                         |
-| Supervision         | Prometheus, Grafana                             |
+| Supervision         | Prometheus, Grafana, Node Exporter              |
 | Gestion de versions | Git, GitHub                                     |
 
 ---
@@ -167,9 +170,12 @@ Déploiement d'une solution de supervision permettant le suivi de l'état de san
 * administrer des systèmes Windows et Linux ;
 * gérer les identités et les accès ;
 * sécuriser un environnement informatique ;
+* superviser une infrastructure ;
+* automatiser des tâches d'administration ;
 * documenter des procédures techniques ;
-* automatiser des tâches d'administration.
+* appliquer des bonnes pratiques d'exploitation et de sécurité.
 
-Ces compétences s'inscrivent dans une démarche d'évolution vers des fonctions d'**administrateur systèmes et réseaux**.
+Ces réalisations s'inscrivent dans une démarche d'évolution vers des fonctions d'**administrateur systèmes et réseaux**.
 
+---
 
