@@ -1,3 +1,5 @@
+
+
 # TSSR Portfolio
 
 ## Présentation
@@ -26,11 +28,11 @@ Les projets présentés reproduisent des scénarios réalistes inspirés des env
 ### Administration Réseau
 
 * Routage IP
-* VLAN
-* VPN Site-à-Site
+* NAT
 * Firewalling
 * Segmentation réseau
-* Architecture multisites
+* Architecture réseau sécurisée
+* Analyse du trafic réseau
 
 ### Administration Linux
 
@@ -39,8 +41,8 @@ Les projets présentés reproduisent des scénarios réalistes inspirés des env
 * Docker
 * Apache Guacamole
 * Portainer
-* Gestion des services
 * Administration système
+* Gestion des services
 
 ### Automatisation
 
@@ -55,6 +57,8 @@ Les projets présentés reproduisent des scénarios réalistes inspirés des env
 * Modèle AGDLP
 * Gestion des comptes privilégiés
 * Journalisation et audit
+* Détection d'intrusion
+* Analyse des événements de sécurité
 * Recommandations ANSSI
 * Benchmarks CIS
 * Principe du moindre privilège
@@ -63,8 +67,11 @@ Les projets présentés reproduisent des scénarios réalistes inspirés des env
 
 * Prometheus
 * Grafana
+* Loki
+* Promtail
 * Node Exporter
 * Collecte de métriques
+* Centralisation des logs
 * Création de tableaux de bord
 
 ---
@@ -97,25 +104,37 @@ Conception et déploiement d'une infrastructure Active Directory complète sous 
 
 ---
 
-### Projet 02 – Infrastructure Réseau Multisites Sécurisée
+### Projet 02 – Infrastructure Réseau Sécurisée et Détection d'Intrusion
 
-Conception d'une architecture réseau simulant plusieurs sites géographiques interconnectés au travers d'un VPN Site-à-Site.
+Conception et déploiement d'une infrastructure réseau reposant sur un routeur Debian sécurisé assurant le routage, le NAT, le filtrage des flux et la détection d'intrusion.
+
+L'environnement intègre également une solution de supervision et de centralisation des événements de sécurité permettant l'analyse en temps réel du trafic réseau.
 
 #### Technologies
 
-* Hyper-V
-* pfSense
-* VPN IPsec
-* VLAN
-* Routage
+* Debian Linux
+* iptables
+* NAT
+* Routage IP
+* Suricata IDS
+* Emerging Threats
+* Grafana
+* Loki
+* Promtail
+* Nmap
 
 #### Compétences démontrées
 
-* Architecture réseau
-* Segmentation des flux
-* Routage inter-sites
-* Sécurisation des communications
-* Administration des équipements réseau
+* Administration réseau Linux
+* Mise en œuvre du routage IP
+* Configuration NAT
+* Filtrage des flux réseau
+* Détection d'intrusion
+* Analyse d'événements de sécurité
+* Centralisation des logs
+* Supervision de sécurité
+* Investigation réseau
+* Documentation technique
 
 ---
 
@@ -150,15 +169,16 @@ Conception et déploiement d'une plateforme centralisée d'administration permet
 
 ## Technologies utilisées
 
-| Domaine             | Technologies                                    |
-| ------------------- | ----------------------------------------------- |
-| Systèmes Microsoft  | Windows Server 2022, Active Directory, DNS, GPO |
-| Systèmes Linux      | Debian, Docker, OpenSSH, Guacamole              |
-| Réseau              | pfSense, VPN, VLAN, Routage                     |
-| Automatisation      | PowerShell                                      |
-| Virtualisation      | Hyper-V                                         |
-| Supervision         | Prometheus, Grafana, Node Exporter              |
-| Gestion de versions | Git, GitHub                                     |
+| Domaine             | Technologies                                       |
+| ------------------- | -------------------------------------------------- |
+| Systèmes Microsoft  | Windows Server 2022, Active Directory, DNS, GPO    |
+| Systèmes Linux      | Debian, Docker, OpenSSH, Guacamole                 |
+| Réseau              | Routage IP, NAT, Firewall, Suricata IDS            |
+| Automatisation      | PowerShell                                         |
+| Virtualisation      | Hyper-V                                            |
+| Supervision         | Grafana, Prometheus, Loki, Promtail, Node Exporter |
+| Sécurité            | Suricata, CIS Benchmarks, Recommandations ANSSI    |
+| Gestion de versions | Git, GitHub                                        |
 
 ---
 
@@ -170,12 +190,16 @@ Conception et déploiement d'une plateforme centralisée d'administration permet
 * administrer des systèmes Windows et Linux ;
 * gérer les identités et les accès ;
 * sécuriser un environnement informatique ;
-* superviser une infrastructure ;
+* mettre en œuvre des mécanismes de détection et de supervision ;
+* analyser des événements de sécurité ;
 * automatiser des tâches d'administration ;
 * documenter des procédures techniques ;
-* appliquer des bonnes pratiques d'exploitation et de sécurité.
+* appliquer des bonnes pratiques d'exploitation et de cybersécurité.
 
-Ces réalisations s'inscrivent dans une démarche d'évolution vers des fonctions d'**administrateur systèmes et réseaux**.
+Ces réalisations s'inscrivent dans une démarche d'évolution vers des fonctions d'**administrateur systèmes et réseaux**, avec une sensibilité particulière pour les problématiques de sécurité et de supervision des infrastructures.
 
 ---
 
+
+
+De nouveaux scripts, procédures, documentations techniques, architectures et scénarios d'administration seront ajoutés progressivement afin d'élargir les compétences couvertes par ce dépôt.
