@@ -1,30 +1,35 @@
-
----
-
-### 5. Troisième fichier
-
-**03-Routage-NAT.md**
-
-```markdown
 # Routage et NAT
 
 ## Activation du routage
 
-Commande :
+Afin que le serveur Debian puisse assurer le rôle de routeur entre le réseau local et le réseau externe, le routage IPv4 doit être activé.
 
-```bash
+La vérification est réalisée à l'aide de la commande suivante :
+
 cat /proc/sys/net/ipv4/ip_forward
 
-La valeur 1 confirme l'activation du routage IPv4.
+Lorsque la valeur retournée est égale à **1**, cela confirme que le transfert de paquets entre les différentes interfaces réseau est autorisé.
 
-Configuration du NAT
+Cette configuration permet au serveur de faire circuler le trafic entre le réseau local (LAN) et le réseau externe (WAN).
 
-Commande :
+## Configuration du NAT
+
+La translation d'adresses réseau (NAT) est mise en œuvre à l'aide d'iptables.
+
+La commande suivante permet de vérifier les règles NAT configurées sur le routeur :
 
 sudo iptables -t nat -L
 
-Le NAT permet aux équipements du réseau privé d'accéder à Internet via l'adresse WAN du routeur.
+Le NAT permet de remplacer les adresses IP privées du réseau local par l'adresse IP de l'interface WAN lors des communications vers Internet.
 
-Résultat
+Ce mécanisme présente plusieurs avantages :
 
-Les postes du LAN peuvent communiquer avec Internet sans être directement exposés.
+* Accès à Internet pour l'ensemble des postes du réseau local ;
+* Masquage des adresses IP privées ;
+* Réduction de l'exposition directe des équipements internes.
+
+## Résultat
+
+Après l'activation du routage et la mise en place du NAT, les équipements du réseau local peuvent accéder aux ressources externes tout en restant protégés derrière l'adresse IP du routeur.
+
+Cette configuration constitue une étape essentielle dans la sécurisation et le fonctionnement de l'infrastructure réseau.
