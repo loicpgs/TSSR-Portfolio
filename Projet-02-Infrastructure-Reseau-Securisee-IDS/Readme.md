@@ -187,6 +187,3 @@ Projet-02-Infrastructure-Reseau-Securisee-IDS
 
 ---
 
-## Statut
-
-✅ Projet terminé et documenté dans le cadre du portfolio TSSR.
