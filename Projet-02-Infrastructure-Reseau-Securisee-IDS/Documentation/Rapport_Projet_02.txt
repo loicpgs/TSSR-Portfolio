@@ -1,0 +1,347 @@
+
+Déploiement d’une infrastructure réseau sécurisée avec détection d’intrusion et supervision
+
+
+
+
+
+
+    1. Contexte / Objectif
+Mise en place d’un routeur Linux sous Debian permettant :
+    • la communication entre un réseau LAN et Internet
+    • la mise en place d’un NAT
+    • la sécurisation via un firewall
+
+
+    2. Configuration réseau du routeur
+
+        2.1 Interfaces réseau
+Commande
+
+ip a
+
+
+
+
+        2.2 Configuration IP
+Fichier :
+
+cat /etc/network/interfaces
+
+
+
+
+
+    3. Activation du routage
+Commande :
+
+cat /proc/sys/net/ipv4/ip_forward
+
+
+
+    4. Mise en place du NAT
+Commande :
+
+sudo iptables -t nat -L
+
+
+    5. Configuration du firewall
+Commande :
+
+sudo iptables -L
+
+
+    6. Configuration du client
+Configuration manuelle du poste client Windows
+    • IP : 192.168.50.10
+    • Passerelle : 192.168.50.1
+    • DNS : 8.8.8.8
+
+
+    7. Tests de connectivité
+
+Test 1 : LAN
+
+
+
+Test 2 : Internet
+
+
+
+Test 3 : DNS
+
+
+
+    8. Analyse
+
+Le routage est assuré grâce à l’activation de ip_forward.
+Le NAT permet la translation d’adresses privées vers l’adresse WAN.
+Le firewall sécurise les flux en bloquant les connexions entrantes non autorisées.
+
+    9. Mise en place d’un IDS avec Suricata
+
+        9.1 Objectif
+L’objectif est de mettre en place un système de détection d’intrusion (IDS) afin d’analyser le trafic réseau et détecter des comportements suspects ou malveillants.
+        9.2 Installation
+
+sudo apt update
+sudo apt install suricata -y
+
+
+
+
+        9.3 Configuration de l’interface
+Le fichier de configuration principal est :
+
+/etc/suricata/suricata.yaml
+
+Suricata est configuré pour écouter sur l’interface LAN :
+
+af-packet:
+ - interface: eth1
+
+
+        9.4 Gestion des règles
+Un fichier de règles personnalisées a été créé :
+
+/var/lib/suricata/rules/local.rules
+
+Exemple de règle ICMP :
+
+alert icmp any any -> any any (msg:"PING DETECTED"; sid:1000001; rev:1;)
+Exemple de règle scan :
+
+alert tcp any any -> any any (flags:S; msg:"SYN SCAN DETECTED"; sid:1000002; rev:1;)
+
+Activation dans le fichier YAML :
+
+rule-files:
+ - local.rules
+
+
+
+        9.5 Test de configuration
+
+sudo suricata -T -c /etc/suricata/suricata.yaml -v
+
+
+        9.6 Démarrage du service
+
+sudo systemctl restart suricata sudo systemctl status suricata
+
+
+
+        9.7 Analyse des logs
+Logs rapides :
+
+sudo tail -f /var/log/suricata/fast.log
+
+
+
+
+        9.8 Tests de détection
+Test ICMP
+Depuis le client :
+
+ping 192.168.50.1
+
+            ▪ détection dans fast.log
+            ▪ message : PING DETECTED
+
+
+
+
+Test scan réseau
+
+nmap -sS 192.168.50.10
+
+Résultat :
+            ▪ Détection du scan
+            ▪ Message : SYN SCAN DETECTED
+
+
+
+        9.9 Analyse
+Suricata permet d’analyser le trafic réseau en temps réel et de détecter des comportements suspects.
+Les tests réalisés ont démontré :
+            ▪ la détection des requêtes ICMP
+            ▪ la détection des scans réseau
+            ▪ la génération de logs exploitables
+L’outil fonctionne en mode IDS (détection uniquement).
+
+    10. Intégration de règles avancées dans Suricata
+
+        10.1 Objectif
+Afin d’améliorer les capacités de détection de l’IDS, des règles communautaires (Emerging Threats Open) ont été intégrées.
+Ces règles permettent de détecter des comportements malveillants connus (scans, anomalies protocolaires, activités suspectes).
+
+        10.2 Installation des règles
+Installation de l’outil de mise à jour :
+
+sudo apt install suricata-update -y
+
+Téléchargement des règles :
+
+sudo suricata-update
+
+        10.3 Activation des règles
+Modification du fichier de configuration :
+
+sudo nano /etc/suricata/suricata.yaml
+
+Configuration :
+
+rule-files:
+ - suricata.rules
+ - local.rules
+
+
+        10.4 Vérification de la configuration
+
+sudo suricata -T -c /etc/suricata/suricata.yaml -v
+
+
+        10.5 Redémarrage du service
+
+sudo systemctl restart suricata
+
+        10.6 Tests avancés
+Scan réseau approfondi
+
+nmap -A 192.168.50.10
+
+Observation des alertes
+
+sudo tail -f /var/log/suricata/fast.log ET SCAN
+
+Requête DNS / Trafic HTTPS sortant
+
+
+        10.7 Analyse des résultats
+L’ajout des règles Emerging Threats permet à Suricata de détecter un large éventail d’activités suspectes.
+    11 .Mise en place d’une supervision graphique des logs Suricata
+
+Objectif
+L’objectif est de mettre en place un système de supervision permettant de visualiser en temps réel les alertes générées par l’IDS Suricata, afin de faciliter l’analyse des événements de sécurité.
+
+
+Architecture mise en place
+Suricata → eve.json → Promtail → Loki → Grafana
+
+
+Principe de fonctionnement
+    • Suricata génère des logs au format JSON (eve.json)
+    • Promtail collecte ces logs
+    • Loki stocke les logs
+    • Grafana permet leur visualisation graphique
+
+        11.1 Installation de Grafana
+Installation
+
+
+sudo apt install grafana -y
+
+Démarrage
+
+sudo systemctl enable grafana-server sudo systemctl start grafana-server
+
+Accès
+
+http://172.16.3.68:3000
+
+Identifiants par défaut :
+    • admin / admin
+à modifier rapidement avec un mot de passe sécurisé
+
+        11.2 Installation et configuration de Loki
+Installation
+
+wget https://github.com/grafana/loki/releases/latest/download/loki-linux-amd64.zip unzip loki-linux-amd64.zip
+sudo mv loki-linux-amd64 /usr/local/bin/loki sudo chmod +x /usr/local/bin/loki
+
+Configuration
+Fichier :
+
+sudo nano /etc/loki-config.yml
+
+
+Lancement
+
+loki -config.file=/etc/loki-config.yml
+
+
+        11.3 Installation et configuration de Promtail
+Installation
+
+wget https://github.com/grafana/loki/releases/download/v3.5.11/promtail-linux-amd64.zip unzip promtail-linux-amd64.zip
+sudo mv promtail-linux-amd64 /usr/local/bin/promtail sudo chmod +x /usr/local/bin/promtail
+
+
+Configuration
+
+sudo nano /etc/promtail-config.yml server:
+ http_listen_port: 9080
+ grpc_listen_port: 0
+positions:
+ filename: /tmp/positions.yaml
+
+clients:
+ - url: http://localhost:3100/loki/api/v1/push
+
+scrape_configs:
+ - job_name: suricata
+  static_configs:
+	- targets:
+	- localhost
+	labels:
+	job: suricata
+	 path	: /var/log/suricata/eve.json
+
+
+Lancement
+
+promtail -config.file=/etc/promtail-config.yml
+
+
+        11.4 Intégration de Loki dans Grafana
+Ajout de la source de données
+            ▪ Settings → Data Sources
+            ▪ Add data source
+            ▪ Loki Configuration :
+URL : http://localhost:3100
+
+        11.5 Visualisation des logs
+Requête de base
+
+{job="suricata"}
+
+Filtrage des alertes
+{job="suricata"} |= "alert"
+
+
+        11.6 Création d’un dashboard
+Panel 1 — Logs
+            ▪ Type : Logs
+            ▪ Requête :
+
+{job="suricata"} |= "alert"
+
+
+Panel 2 — Volume d’alertes
+
+count_over_time({job="suricata"} |= "alert"[1m])
+
+            ▪ Type : Time series
+
+        11.7 Résultat
+Le système permet une supervision en temps réel des événements de sécurité du réseau.
+
+        11.8 Apports
+            ▪ Centralisation des logs
+            ▪ Visualisation graphique
+            ▪ Détection rapide des attaques
+            ▪ Amélioration de la réactivité
+
+
+Conclusion
+La mise en place de cette solution permet de se rapprocher d’un environnement SOC (Security Operations Center) en intégrant des outils de supervision modernes.
