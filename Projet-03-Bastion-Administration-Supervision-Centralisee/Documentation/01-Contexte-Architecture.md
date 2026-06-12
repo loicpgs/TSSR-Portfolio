@@ -25,7 +25,7 @@ L'infrastructure repose sur les composants suivants :
 * Docker ;
 * Portainer ;
 * UFW ;
-* Zabbix
+* Zabbix ;
 
 ## Services déployés
 
