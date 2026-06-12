@@ -120,6 +120,22 @@ Elle détaille :
 
 ---
 
+## Scripts
+
+Les scripts utilisés pour le déploiement et la configuration de l'infrastructure sont disponibles dans le dossier :
+
+```text
+Scripts/
+```
+
+Ils permettent notamment :
+
+- l'installation de Docker ;
+- le déploiement de Guacamole ;
+- l'installation de Portainer ;
+- la mise en place de Zabbix ;
+- la configuration du pare-feu UFW.
+
 ## Compétences mises en œuvre
 
 ### Administration système
