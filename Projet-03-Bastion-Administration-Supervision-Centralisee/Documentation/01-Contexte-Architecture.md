@@ -25,9 +25,7 @@ L'infrastructure repose sur les composants suivants :
 * Docker ;
 * Portainer ;
 * UFW ;
-* Prometheus ;
-* Node Exporter ;
-* Grafana.
+* Zabbix
 
 ## Services déployés
 
@@ -45,13 +43,12 @@ Les protocoles pris en charge sont :
 
 Portainer simplifie l'administration des conteneurs Docker via une interface graphique.
 
-### Prometheus
+### Zabbix
 
-Prometheus collecte les métriques système et applicatives.
+Zabbix est une solution de supervision permettant de surveiller en temps réel l'état du serveur bastion et des services associés.
 
-### Grafana
+Il collecte des métriques système telles que l'utilisation du processeur, de la mémoire, du stockage et du réseau, tout en offrant une visualisation centralisée via une interface web.
 
-Grafana permet la visualisation des métriques sous forme de tableaux de bord.
 
 ## Schéma d'architecture
 
