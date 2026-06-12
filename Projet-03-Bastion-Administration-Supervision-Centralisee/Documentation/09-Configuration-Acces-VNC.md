@@ -1,0 +1,142 @@
+# Configuration des Accès VNC
+
+## Objectif
+
+Le bastion d'administration permet également l'accès à distance aux postes de travail et aux systèmes utilisant le protocole VNC (Virtual Network Computing).
+
+Grâce à Apache Guacamole, les connexions VNC sont accessibles directement depuis un navigateur web sans nécessiter l'installation d'un client dédié.
+
+## Présentation du protocole VNC
+
+VNC est un protocole permettant le contrôle graphique à distance d'un poste de travail.
+
+Il permet :
+
+- l'administration de postes Linux ;
+- l'accès à des environnements graphiques distants ;
+- l'assistance utilisateur ;
+- la prise en main de systèmes ne disposant pas de service RDP.
+
+## Préparation du poste distant
+
+Avant la configuration dans Guacamole, un serveur VNC doit être installé sur la machine cible.
+
+Exemple sous Linux :
+
+```bash
+sudo apt update
+sudo apt install tigervnc-standalone-server -y
+```
+
+Démarrage du serveur VNC :
+
+```bash
+vncserver
+```
+
+## Vérification du service
+
+Vérification du port d'écoute :
+
+```bash
+ss -tulpn | grep 590
+```
+
+Le service écoute généralement sur :
+
+```text
+5900/TCP
+```
+
+ou
+
+```text
+5901/TCP
+```
+
+selon la configuration.
+
+## Création d'une connexion VNC dans Guacamole
+
+Depuis l'interface d'administration :
+
+1. Ouvrir le menu **Settings**
+2. Sélectionner **Connections**
+3. Cliquer sur **New Connection**
+
+## Paramètres de connexion
+
+### Informations générales
+
+Nom :
+
+```text
+Poste Linux VNC
+```
+
+Protocole :
+
+```text
+VNC
+```
+
+### Paramètres réseau
+
+Adresse IP :
+
+```text
+192.168.X.X
+```
+
+Port :
+
+```text
+5901
+```
+
+### Authentification
+
+Mot de passe VNC :
+
+```text
+********
+```
+
+## Paramètres d'affichage
+
+Selon les besoins, il est possible de configurer :
+
+- la résolution ;
+- la profondeur des couleurs ;
+- le mode plein écran ;
+- le presse-papiers partagé.
+
+## Test de connexion
+
+Une fois la connexion enregistrée :
+
+1. Retourner sur la page d'accueil ;
+2. Sélectionner la connexion VNC ;
+3. Vérifier l'affichage du bureau distant.
+
+## Avantages
+
+L'intégration de VNC dans Guacamole permet :
+
+- l'accès à distance aux environnements graphiques ;
+- la centralisation des connexions ;
+- la suppression des clients VNC locaux ;
+- une administration simplifiée.
+
+## Sécurité
+
+Le passage par le bastion permet :
+
+- de limiter l'exposition des postes ;
+- de centraliser les accès ;
+- d'améliorer la gestion des utilisateurs ;
+- de renforcer la supervision des connexions.
+
+## Résultat
+
+Les postes utilisant le protocole VNC sont désormais accessibles depuis l'interface Guacamole, complétant ainsi les accès SSH et RDP disponibles sur le bastion d'administration.
