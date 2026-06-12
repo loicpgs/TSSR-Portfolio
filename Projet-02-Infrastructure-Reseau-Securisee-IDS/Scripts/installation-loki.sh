@@ -1,0 +1,42 @@
+#!/bin/bash
+
+cd /tmp
+
+wget https://github.com/grafana/loki/releases/latest/download/loki-linux-amd64.zip
+
+sudo apt install unzip -y
+
+unzip loki-linux-amd64.zip
+
+sudo mv loki-linux-amd64 /usr/local/bin/loki
+sudo chmod +x /usr/local/bin/loki
+
+cat <<EOF | sudo tee /etc/loki-config.yml
+auth_enabled: false
+
+server:
+  http_listen_port: 3100
+
+common:
+  path_prefix: /tmp/loki
+  storage:
+    filesystem:
+      chunks_directory: /tmp/loki/chunks
+      rules_directory: /tmp/loki/rules
+  replication_factor: 1
+  ring:
+    kvstore:
+      store: inmemory
+
+schema_config:
+  configs:
+    - from: 2024-01-01
+      store: tsdb
+      object_store: filesystem
+      schema: v13
+      index:
+        prefix: index_
+        period: 24h
+EOF
+
+loki -config.file=/etc/loki-config.yml
