@@ -65,7 +65,7 @@ Les projets présentés reproduisent des scénarios réalistes inspirés des env
 
 ### Supervision
 
-* Prometheus
+* Zabbix
 * Grafana
 * Loki
 * Promtail
@@ -150,9 +150,7 @@ Conception et déploiement d'une plateforme centralisée d'administration permet
 * Portainer
 * OpenSSH
 * UFW
-* Prometheus
-* Node Exporter
-* Grafana
+* Zabbix
 
 #### Compétences démontrées
 
@@ -176,7 +174,7 @@ Conception et déploiement d'une plateforme centralisée d'administration permet
 | Réseau              | Routage IP, NAT, Firewall, Suricata IDS            |
 | Automatisation      | PowerShell                                         |
 | Virtualisation      | Hyper-V                                            |
-| Supervision         | Grafana, Prometheus, Loki, Promtail, Node Exporter |
+| Supervision         | Zabbix |
 | Sécurité            | Suricata, CIS Benchmarks, Recommandations ANSSI    |
 | Gestion de versions | Git, GitHub                                        |
 
