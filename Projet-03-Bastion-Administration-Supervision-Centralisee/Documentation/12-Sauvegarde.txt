@@ -1,93 +1,143 @@
-# Sauvegarde Automatisée du Bastion
+# Configuration des Accès RDP
 
 ## Objectif
 
-L'objectif est de mettre en place une solution de sauvegarde automatisée afin de protéger les données critiques du bastion d'administration.
+Le bastion d'administration permet également de centraliser l'accès aux postes et serveurs Windows grâce au protocole RDP (Remote Desktop Protocol).
 
-La sauvegarde permet de faciliter la restauration des services en cas d'incident et d'améliorer la continuité de service.
+L'intégration de RDP dans Apache Guacamole permet d'accéder à un environnement Windows directement depuis un navigateur web sans installer de client spécifique.
 
-## Principe de fonctionnement
+## Présentation du protocole RDP
 
-Un script Bash exécute automatiquement les opérations de sauvegarde à intervalles réguliers.
+RDP est un protocole développé par Microsoft permettant :
 
-Les données sont regroupées dans une archive compressée puis stockées dans un répertoire dédié.
+- l'accès à distance à un poste Windows ;
+- l'administration de serveurs Windows ;
+- le support utilisateur ;
+- l'utilisation d'applications distantes.
 
-## Éléments sauvegardés
+## Préparation du poste Windows
 
-La sauvegarde inclut :
+Avant la configuration dans Guacamole, les éléments suivants doivent être vérifiés :
 
-* Les fichiers Docker Compose ;
-* Les scripts d'administration ;
-* Les configurations du bastion ;
-* La base de données MariaDB ;
-* Les informations relatives aux conteneurs Docker.
+### Activation du Bureau à Distance
 
-## Sauvegarde de la base de données
-
-La base de données MariaDB utilisée par les services du bastion est exportée automatiquement.
-
-Outil utilisé :
+Sur la machine Windows :
 
 ```text
-mysqldump
+Paramètres
+→ Système
+→ Bureau à distance
+→ Activer le Bureau à distance
 ```
 
-Cette opération permet de conserver les données nécessaires à une restauration ultérieure.
+### Vérification du pare-feu
 
-## Planification des sauvegardes
-
-L'automatisation est assurée par Cron.
-
-Configuration :
+Le port RDP doit être autorisé :
 
 ```text
-0 2 * * * /home/loic/Scripts/backup-bastion.sh
+3389/TCP
 ```
 
-Cette tâche exécute une sauvegarde chaque jour à 02h00.
+### Vérification de la connectivité
 
-## Vérification des sauvegardes
+Depuis le bastion :
 
-Les archives sont stockées dans le répertoire :
+```bash
+ping IP_MACHINE_WINDOWS
+```
+
+## Création d'une connexion RDP dans Guacamole
+
+Depuis l'interface d'administration :
+
+1. Ouvrir le menu **Settings**
+2. Sélectionner **Connections**
+3. Cliquer sur **New Connection**
+
+## Paramètres de connexion
+
+### Informations générales
+
+Nom :
 
 ```text
-/srv/backups/bastion
+Poste Windows
 ```
 
-Les opérations réalisées sont enregistrées dans un fichier journal.
+Protocole :
 
-Consultation du journal :
-
-```bash
-cat /srv/backups/bastion/backup.log
+```text
+RDP
 ```
 
-## Procédure de restauration
+### Paramètres réseau
 
-Une archive peut être extraite afin de récupérer les données sauvegardées.
+Adresse IP :
 
-Extraction :
-
-```bash
-tar -xzf backup-bastion-AAAA-MM-JJ.tar.gz
+```text
+192.168.X.X
 ```
 
-Restauration d'une base MariaDB :
+Port :
 
-```bash
-mysql -u utilisateur -p base_de_donnees < sauvegarde.sql
+```text
+3389
 ```
 
-## Apports de la sauvegarde
+### Authentification
 
-La mise en place de cette solution permet :
+Nom d'utilisateur :
 
-* La protection des données critiques ;
-* L'automatisation des sauvegardes ;
-* La réduction du risque de perte de données ;
-* La simplification des opérations de restauration ;
-* L'amélioration de la continuité de service.
+```text
+Administrateur
+```
 
-## Résultat
+Mot de passe :
 
-Le bastion d'administration dispose désormais d'un système de sauvegarde automatisé permettant de protéger les configurations et les données essentielles au fonctionnement de l'infrastructure.
+```text
+********
+```
+
+Domaine :
+
+```text
+WORKGROUP
+```
+
+ou
+
+```text
+MONDOMAINE.LOCAL
+```
+
+## Paramètres complémentaires
+
+Pour améliorer l'expérience utilisateur :
+
+- Activer le mode plein écran ;
+- Activer le presse-papiers ;
+- Configurer la résolution dynamique ;
+- Autoriser le transfert de fichiers si nécessaire.
+
+## Test de connexion
+
+Une fois la connexion enregistrée :
+
+1. Retourner sur la page d'accueil ;
+2. Sélectionner la connexion ;
+3. Vérifier l'ouverture de la session Windows.
+
+## Avantages
+
+L'utilisation de RDP via Guacamole permet :
+
+- l'accès à distance sans client local ;
+- la centralisation des accès Windows ;
+- la simplification du support utilisateur ;
+- l'administration des serveurs Windows depuis n'importe quel navigateur.
+
+## Sécurité
+
+L'accès RDP est centralisé via le bastion.
+
+Cette architecture permet :
