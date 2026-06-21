@@ -1,32 +1,17 @@
-# Configuration de la Sauvegarde Automatisée
+
+# Sauvegarde Automatisée du Bastion
 
 ## Objectif
 
-Afin de garantir la disponibilité des services et la protection des données critiques du bastion d'administration, une solution de sauvegarde automatisée a été mise en place.
+L'objectif est de mettre en place une solution de sauvegarde automatisée afin de protéger les données critiques du bastion d'administration.
 
-Cette sauvegarde permet de conserver les configurations essentielles ainsi que les données nécessaires à une restauration rapide en cas d'incident.
+La sauvegarde permet de limiter les risques de perte de données et de faciliter la restauration des services en cas d'incident.
 
----
+## Mise en place de l'environnement
 
-## Présentation de la sauvegarde
+Un répertoire dédié aux sauvegardes a été créé sur le serveur Debian.
 
-La stratégie de sauvegarde repose sur un script Bash exécuté automatiquement par Cron.
-
-Les sauvegardes sont archivées au format compressé afin de limiter l'espace disque utilisé.
-
-La solution permet :
-
-* la sauvegarde des fichiers Docker Compose ;
-* la sauvegarde des scripts d'administration ;
-* la sauvegarde de la base de données MariaDB ;
-* l'archivage des configurations système ;
-* la conservation d'un historique de sauvegardes.
-
----
-
-## Préparation de l'environnement
-
-Création du répertoire destiné aux sauvegardes :
+Création du répertoire :
 
 ```bash
 sudo mkdir -p /srv/backups/bastion
@@ -44,9 +29,9 @@ Vérification :
 ls -ld /srv/backups/bastion
 ```
 
----
-
 ## Création du script de sauvegarde
+
+Un script Bash a été développé afin d'automatiser les opérations de sauvegarde.
 
 Création du fichier :
 
@@ -54,78 +39,51 @@ Création du fichier :
 nano ~/Scripts/backup-bastion.sh
 ```
 
-Ajout du script de sauvegarde puis enregistrement du fichier.
-
-Rendre le script exécutable :
+Attribution des droits d'exécution :
 
 ```bash
 chmod +x ~/Scripts/backup-bastion.sh
 ```
 
----
+## Éléments sauvegardés
 
-## Test de fonctionnement
+Le script permet de sauvegarder :
 
-Exécution manuelle :
+* Les fichiers Docker Compose ;
+* Les scripts d'administration ;
+* Les configurations système ;
+* La base de données MariaDB ;
+* Les informations relatives aux conteneurs Docker.
 
-```bash
-~/Scripts/backup-bastion.sh
-```
-
-Vérification du contenu du répertoire :
-
-```bash
-ls -lh /srv/backups/bastion
-```
-
-Le système génère alors une archive compressée contenant les données sauvegardées.
-
----
+Les données sont regroupées dans une archive compressée.
 
 ## Sauvegarde de la base MariaDB
 
-La base de données utilisée par les services conteneurisés est exportée automatiquement grâce à l'utilitaire :
+La base de données utilisée par les services du bastion est exportée automatiquement.
+
+L'outil utilisé est :
 
 ```bash
 mysqldump
 ```
 
-Cette opération permet de conserver :
+Cette opération permet de conserver les données nécessaires à une restauration ultérieure.
 
-* les tables ;
-* les utilisateurs ;
-* les données de configuration ;
-* les paramètres applicatifs.
+## Vérification du fonctionnement
 
-Le fichier SQL généré est ensuite intégré à l'archive de sauvegarde.
+Le script peut être exécuté manuellement afin de vérifier son bon fonctionnement.
 
----
-
-## Planification automatique avec Cron
-
-Ouverture de la table Cron :
+Exécution du script :
 
 ```bash
-crontab -e
+~/Scripts/backup-bastion.sh
 ```
 
-Ajout de la tâche planifiée :
+Contrôle des sauvegardes :
 
 ```bash
-0 2 * * * /home/loic/Scripts/backup-bastion.sh
+ls -lh /srv/backups/bastion
 ```
-
-Cette configuration déclenche une sauvegarde quotidienne à 02h00.
-
-Vérification :
-
-```bash
-crontab -l
-```
-
----
-
-## Vérification des sauvegardes
 
 Consultation du journal :
 
@@ -133,15 +91,51 @@ Consultation du journal :
 cat /srv/backups/bastion/backup.log
 ```
 
-Contrôle des archives :
+## Automatisation avec Cron
+
+Afin d'assurer une sauvegarde régulière, une tâche Cron a été configurée.
+
+Modification de la table Cron :
+
+```bash
+crontab -e
+```
+
+Configuration :
+
+```text
+0 2 * * * /home/loic/Scripts/backup-bastion.sh
+```
+
+Vérification :
+
+```bash
+crontab -l
+```
+
+Cette tâche exécute automatiquement la sauvegarde chaque jour à 02h00.
+
+## Vérification des sauvegardes
+
+Les archives générées sont stockées dans le répertoire :
+
+```text
+/srv/backups/bastion
+```
+
+Contrôle des fichiers :
 
 ```bash
 ls -lh /srv/backups/bastion
 ```
 
-La présence régulière de nouvelles archives confirme le bon fonctionnement du système.
+Vérification du journal :
 
----
+```bash
+cat /srv/backups/bastion/backup.log
+```
+
+La présence de nouvelles archives confirme le bon déroulement des sauvegardes.
 
 ## Procédure de restauration
 
@@ -151,42 +145,24 @@ Extraction d'une archive :
 tar -xzf backup-bastion-AAAA-MM-JJ.tar.gz
 ```
 
-Les fichiers restaurés peuvent ensuite être replacés dans leur emplacement d'origine.
-
-Pour une base MariaDB :
+Restauration d'une base MariaDB :
 
 ```bash
 mysql -u utilisateur -p base_de_donnees < sauvegarde.sql
 ```
 
-Cette procédure permet une remise en service rapide des composants sauvegardés.
+Cette procédure permet de récupérer rapidement les données sauvegardées.
 
----
+## Apports de la sauvegarde
 
-## Avantages
+La mise en place de cette solution permet :
 
-La mise en place de cette sauvegarde permet :
-
-* la protection des données critiques ;
-* l'automatisation des opérations de sauvegarde ;
-* la réduction du risque de perte de données ;
-* la simplification des opérations de restauration ;
-* l'amélioration de la continuité de service.
-
----
-
-## Sécurité
-
-Les sauvegardes sont stockées sur le serveur bastion dans un répertoire dédié.
-
-L'accès est limité aux administrateurs du système.
-
-Les opérations sont journalisées afin de faciliter le suivi des sauvegardes réalisées.
-
----
+* La protection des données critiques ;
+* L'automatisation des sauvegardes ;
+* La réduction du risque de perte de données ;
+* La simplification des opérations de restauration ;
+* L'amélioration de la continuité de service.
 
 ## Résultat
 
-Les configurations du bastion, les scripts d'administration et la base de données MariaDB sont désormais sauvegardés automatiquement.
-
-Cette solution renforce la résilience de l'infrastructure et constitue une bonne pratique d'administration système dans un environnement professionnel.
+Le bastion d'administration dispose désormais d'un système de sauvegarde automatisé permettant de protéger les configurations, les scripts et les données critiques nécessaires au fonctionnement de l'infrastructure.
