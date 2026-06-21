@@ -1,0 +1,71 @@
+#!/bin/bash
+
+# ==========================================================
+# Script de sauvegarde du bastion d'administration
+# Projet 03 - Bastion + Supervision
+# Auteur : Loïc Pages
+# ==========================================================
+
+DATE=$(date +"%Y-%m-%d_%H-%M-%S")
+BACKUP_DIR="/srv/backups/bastion"
+BACKUP_FILE="$BACKUP_DIR/backup-bastion-$DATE.tar.gz"
+LOG_FILE="$BACKUP_DIR/backup.log"
+
+# Dossiers/fichiers à sauvegarder
+DOCKER_DIR="/home/$USER"
+COMPOSE_FILES=$(find /home/$USER -name "docker-compose.yml" 2>/dev/null)
+UFW_CONFIG="/etc/ufw"
+SCRIPTS_DIR="/home/$USER/Scripts"
+
+# Base MariaDB / MySQL Docker
+DB_CONTAINER="mysql"
+DB_NAME="zabbix"
+DB_USER="zabbix"
+DB_PASSWORD="zabbix"
+
+mkdir -p "$BACKUP_DIR"
+
+echo "[$DATE] Début de la sauvegarde" >> "$LOG_FILE"
+
+TEMP_DIR="/tmp/backup-bastion-$DATE"
+mkdir -p "$TEMP_DIR"
+
+# Sauvegarde des fichiers docker-compose.yml
+mkdir -p "$TEMP_DIR/docker-compose"
+for file in $COMPOSE_FILES; do
+    cp "$file" "$TEMP_DIR/docker-compose/" 2>/dev/null
+done
+
+# Sauvegarde de la configuration UFW
+if [ -d "$UFW_CONFIG" ]; then
+    cp -r "$UFW_CONFIG" "$TEMP_DIR/ufw"
+fi
+
+# Sauvegarde des scripts
+if [ -d "$SCRIPTS_DIR" ]; then
+    cp -r "$SCRIPTS_DIR" "$TEMP_DIR/scripts"
+fi
+
+# Export de la base MariaDB / MySQL
+if docker ps --format '{{.Names}}' | grep -q "^$DB_CONTAINER$"; then
+    docker exec "$DB_CONTAINER" mysqldump -u "$DB_USER" -p"$DB_PASSWORD" "$DB_NAME" > "$TEMP_DIR/$DB_NAME.sql"
+    echo "[$DATE] Export de la base $DB_NAME terminé" >> "$LOG_FILE"
+else
+    echo "[$DATE] Conteneur $DB_CONTAINER introuvable, export SQL ignoré" >> "$LOG_FILE"
+fi
+
+# Sauvegarde de la liste des conteneurs et images Docker
+docker ps -a > "$TEMP_DIR/docker-containers.txt"
+docker images > "$TEMP_DIR/docker-images.txt"
+docker volume ls > "$TEMP_DIR/docker-volumes.txt"
+
+# Création de l'archive compressée
+tar -czf "$BACKUP_FILE" -C "$TEMP_DIR" .
+
+# Nettoyage temporaire
+rm -rf "$TEMP_DIR"
+
+# Suppression des sauvegardes de plus de 7 jours
+find "$BACKUP_DIR" -name "backup-bastion-*.tar.gz" -mtime +7 -delete
+
+echo "[$DATE] Sauvegarde terminée : $BACKUP_FILE" >> "$LOG_FILE"
