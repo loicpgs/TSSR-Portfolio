@@ -1,48 +1,114 @@
-GPO-GRIFFON-05-Desactivation-Execution-Automatique
-Présentation
 
-Dans le cadre du projet Griffon, une stratégie de groupe a été mise en œuvre afin de désactiver les fonctionnalités AutoRun et AutoPlay sur l'ensemble des postes du domaine.
+# GPO-GRIFFON-05-Desactivation-Execution-Automatique
 
-Cette mesure vise à empêcher l'exécution automatique de programmes présents sur les supports amovibles tels que les clés USB, les disques externes ou les supports optiques.
+## Présentation
 
-Contexte
+Dans le cadre du projet Griffon, une stratégie de groupe a été mise en œuvre afin de désactiver les fonctionnalités AutoRun et AutoPlay sur l'ensemble des postes intégrés au domaine GRIFFON.LOCAL.
 
-Les supports amovibles constituent un vecteur d'infection fréquemment utilisé pour introduire des logiciels malveillants dans un système d'information.
+Ces mécanismes permettent normalement à Windows d'exécuter automatiquement certaines actions lorsqu'un support amovible est connecté à l'ordinateur.
 
-Certains malwares exploitent les mécanismes AutoRun et AutoPlay afin d'exécuter automatiquement du code malveillant lors de l'insertion d'un périphérique.
+L'objectif de cette stratégie est de limiter les risques liés à l'exécution automatique de programmes potentiellement malveillants et de renforcer la sécurité des postes utilisateurs.
 
-La désactivation de ces fonctionnalités permet de conserver le contrôle sur les programmes exécutés sur les postes utilisateurs.
+---
 
-Paramètres configurés
+## Contexte
 
-La stratégie applique les paramètres suivants :
+Les périphériques amovibles tels que les clés USB, les disques durs externes ou certains supports optiques constituent un vecteur d'attaque fréquemment utilisé pour diffuser des logiciels malveillants.
 
-Désactivation d'AutoRun ;
-Désactivation d'AutoPlay ;
-Blocage de l'exécution automatique sur tous les lecteurs ;
-Application à l'ensemble des postes du domaine.
-Risques traités
+Historiquement, de nombreux malwares exploitaient les fonctionnalités AutoRun et AutoPlay afin d'exécuter automatiquement du code malveillant dès l'insertion du périphérique dans le poste.
+
+La désactivation de ces mécanismes permet de réduire significativement ce risque en obligeant l'utilisateur à lancer manuellement les programmes présents sur le support.
+
+---
+
+## Paramètres configurés
+
+La stratégie applique :
+
+* Désactivation de la fonctionnalité AutoRun ;
+* Désactivation de la fonctionnalité AutoPlay ;
+* Blocage de l'exécution automatique sur tous les lecteurs ;
+* Application de la configuration à l'ensemble des postes du domaine.
+
+---
+
+## Risques traités
 
 Cette stratégie permet de réduire :
 
-Les infections par clé USB ;
-L'exécution involontaire de programmes ;
-La propagation de logiciels malveillants ;
-Les risques liés aux supports amovibles non maîtrisés.
-Vérification
+* Les infections via clés USB ;
+* L'exécution automatique de logiciels malveillants ;
+* La propagation de virus entre postes ;
+* Les risques liés aux périphériques amovibles ;
+* Les compromissions accidentelles des postes utilisateurs.
+
+---
+
+## Mise en œuvre
+
+La stratégie a été créée dans :
+
+```text
+Gestion des stratégies de groupe (GPMC)
+```
+
+Nom de la stratégie :
+
+```text
+GPO-GRIFFON-05-Desactivation-Execution-Automatique
+```
+
+La GPO est liée au domaine :
+
+```text
+griffon.local
+```
+
+afin d'assurer son application automatique sur l'ensemble des postes concernés.
+
+---
+
+## Vérification
 
 Mise à jour des stratégies :
 
+```powershell
 gpupdate /force
+```
 
-Contrôle des stratégies appliquées :
+Contrôle des GPO appliquées :
 
+```powershell
 gpresult /r
-Bénéfices
-Réduction des risques d'infection ;
-Contrôle renforcé des périphériques amovibles ;
-Sécurisation des postes utilisateurs ;
-Application homogène de la politique de sécurité.
-Résultat
+```
 
-Les supports amovibles ne peuvent plus exécuter automatiquement de programmes lors de leur connexion aux postes du domaine GRIFFON.LOCAL.
+Test de validation :
+
+```text
+Insertion d'une clé USB contenant un fichier exécutable.
+Aucune exécution automatique ne doit être observée.
+```
+
+---
+
+## Bénéfices
+
+* Réduction du risque d'infection ;
+* Contrôle renforcé des périphériques amovibles ;
+* Protection des postes utilisateurs ;
+* Application homogène des règles de sécurité ;
+* Réduction de la surface d'attaque.
+
+---
+
+## Application dans le projet Griffon
+
+Cette stratégie complète les autres mesures de durcissement mises en œuvre dans l'infrastructure Active Directory.
+
+Elle participe à la sécurisation des postes utilisateurs en limitant les risques liés aux supports amovibles et en appliquant les recommandations de sécurité couramment utilisées dans les environnements professionnels.
+
+---
+
+## Résultat
+
+Les fonctionnalités AutoRun et AutoPlay sont désactivées sur l'ensemble des postes du domaine GRIFFON.LOCAL, empêchant ainsi l'exécution automatique de programmes provenant de supports amovibles.
