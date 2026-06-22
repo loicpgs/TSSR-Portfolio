@@ -1,0 +1,22 @@
+Import-Module GroupPolicy
+
+$GpoName = "GPO-GRIFFON-02-Desactivation-SMBv1"
+$OuTarget = "DC=griffon,DC=local"
+
+New-GPO -Name $GpoName -Comment "Désactivation de SMBv1 pour réduire les risques liés aux protocoles obsolètes."
+
+Set-GPRegistryValue -Name $GpoName `
+    -Key "HKLM\SYSTEM\CurrentControlSet\Services\LanmanServer\Parameters" `
+    -ValueName "SMB1" `
+    -Type DWord `
+    -Value 0
+
+Set-GPRegistryValue -Name $GpoName `
+    -Key "HKLM\SYSTEM\CurrentControlSet\Services\mrxsmb10" `
+    -ValueName "Start" `
+    -Type DWord `
+    -Value 4
+
+New-GPLink -Name $GpoName -Target $OuTarget -LinkEnabled Yes
+
+Write-Host "GPO SMBv1 créée et liée au domaine GRIFFON.LOCAL"

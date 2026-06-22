@@ -1,0 +1,31 @@
+Import-Module ActiveDirectory
+
+$Password = ConvertTo-SecureString "P@ssw0rd-Temporaire!" -AsPlainText -Force
+
+$Users = @(
+    @{First="Pierre"; Last="Martin"; Login="p.martin"; OU="OU=Direction,OU=Utilisateurs,DC=griffon,DC=local"; Group="GG_DIRECTION"},
+    @{First="Marie"; Last="Dupont"; Login="m.dupont"; OU="OU=Ressources_Humaines,OU=Utilisateurs,DC=griffon,DC=local"; Group="GG_RH"},
+    @{First="Thomas"; Last="Leroy"; Login="t.leroy"; OU="OU=Finance,OU=Utilisateurs,DC=griffon,DC=local"; Group="GG_FINANCE"},
+    @{First="Lucas"; Last="Petit"; Login="l.petit"; OU="OU=Bureau_Etudes,OU=Utilisateurs,DC=griffon,DC=local"; Group="GG_BE"},
+    @{First="Julien"; Last="Garcia"; Login="j.garcia"; OU="OU=Production,OU=Utilisateurs,DC=griffon,DC=local"; Group="GG_PRODUCTION"},
+    @{First="Loic"; Last="Pages"; Login="l.pages"; OU="OU=Informatique,OU=Utilisateurs,DC=griffon,DC=local"; Group="GG_IT"}
+)
+
+foreach ($User in $Users) {
+    if (-not (Get-ADUser -Filter "SamAccountName -eq '$($User.Login)'" -ErrorAction SilentlyContinue)) {
+        New-ADUser `
+            -Name "$($User.First) $($User.Last)" `
+            -GivenName $User.First `
+            -Surname $User.Last `
+            -SamAccountName $User.Login `
+            -UserPrincipalName "$($User.Login)@griffon.local" `
+            -Path $User.OU `
+            -AccountPassword $Password `
+            -Enabled $true `
+            -ChangePasswordAtLogon $true
+
+        Add-ADGroupMember -Identity $User.Group -Members $User.Login
+    }
+}
+
+Write-Host "Utilisateurs créés et ajoutés aux groupes globaux."

@@ -1,0 +1,46 @@
+$RootPath = "C:\Partages"
+
+$Shares = @(
+    @{Name="Direction"; Group="DL_DIRECTION_RW"},
+    @{Name="RH"; Group="DL_RH_RW"},
+    @{Name="Finance"; Group="DL_FINANCE_RW"},
+    @{Name="Bureau_Etudes"; Group="DL_BE_RW"},
+    @{Name="Production"; Group="DL_PRODUCTION_RW"},
+    @{Name="IT_Admin"; Group="DL_IT_ADMIN"}
+)
+
+New-Item -Path $RootPath -ItemType Directory -Force
+
+foreach ($Share in $Shares) {
+    $FolderPath = Join-Path $RootPath $Share.Name
+
+    New-Item -Path $FolderPath -ItemType Directory -Force
+
+    $Acl = Get-Acl $FolderPath
+    $Acl.SetAccessRuleProtection($true, $false)
+
+    $AdminRule = New-Object System.Security.AccessControl.FileSystemAccessRule(
+        "Administrateurs",
+        "FullControl",
+        "ContainerInherit,ObjectInherit",
+        "None",
+        "Allow"
+    )
+
+    $GroupRule = New-Object System.Security.AccessControl.FileSystemAccessRule(
+        $Share.Group,
+        "Modify",
+        "ContainerInherit,ObjectInherit",
+        "None",
+        "Allow"
+    )
+
+    $Acl.AddAccessRule($AdminRule)
+    $Acl.AddAccessRule($GroupRule)
+
+    Set-Acl -Path $FolderPath -AclObject $Acl
+
+    New-SmbShare -Name $Share.Name -Path $FolderPath -ChangeAccess $Share.Group -FullAccess "Administrateurs" -ErrorAction SilentlyContinue
+}
+
+Write-Host "Dossiers partagés créés avec permissions AGDLP."

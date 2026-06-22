@@ -1,0 +1,28 @@
+Import-Module GroupPolicy
+
+$GpoName = "GPO-GRIFFON-10-Journalisation-PowerShell"
+$OuTarget = "DC=griffon,DC=local"
+
+New-GPO -Name $GpoName -Comment "Activation de la journalisation PowerShell afin d'améliorer la traçabilité des commandes exécutées."
+
+Set-GPRegistryValue -Name $GpoName `
+    -Key "HKLM\Software\Policies\Microsoft\Windows\PowerShell\ScriptBlockLogging" `
+    -ValueName "EnableScriptBlockLogging" `
+    -Type DWord `
+    -Value 1
+
+Set-GPRegistryValue -Name $GpoName `
+    -Key "HKLM\Software\Policies\Microsoft\Windows\PowerShell\ModuleLogging\ModuleNames" `
+    -ValueName "*" `
+    -Type String `
+    -Value "*"
+
+Set-GPRegistryValue -Name $GpoName `
+    -Key "HKLM\Software\Policies\Microsoft\Windows\PowerShell\ModuleLogging" `
+    -ValueName "EnableModuleLogging" `
+    -Type DWord `
+    -Value 1
+
+New-GPLink -Name $GpoName -Target $OuTarget -LinkEnabled Yes
+
+Write-Host "GPO Journalisation PowerShell créée et liée au domaine GRIFFON.LOCAL"

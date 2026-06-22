@@ -1,0 +1,21 @@
+Import-Module ActiveDirectory
+
+$Password = ConvertTo-SecureString "Adm!Griffon2026" -AsPlainText -Force
+$AdminOU = "OU=Administrateurs,OU=Comptes_Privilegies,DC=griffon,DC=local"
+
+if (-not (Get-ADUser -Filter "SamAccountName -eq 'adm.lpages'" -ErrorAction SilentlyContinue)) {
+    New-ADUser `
+        -Name "Admin Loic Pages" `
+        -GivenName "Admin" `
+        -Surname "Loic Pages" `
+        -SamAccountName "adm.lpages" `
+        -UserPrincipalName "adm.lpages@griffon.local" `
+        -Path $AdminOU `
+        -AccountPassword $Password `
+        -Enabled $true `
+        -ChangePasswordAtLogon $true
+
+    Add-ADGroupMember -Identity "Domain Admins" -Members "adm.lpages"
+}
+
+Write-Host "Compte administrateur dédié créé."

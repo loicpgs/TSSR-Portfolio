@@ -1,0 +1,16 @@
+Import-Module GroupPolicy
+
+$GpoName = "GPO-GRIFFON-03-Desactivation-LLMNR"
+$OuTarget = "DC=griffon,DC=local"
+
+New-GPO -Name $GpoName -Comment "Désactivation de LLMNR afin de limiter les risques d'attaques de type spoofing et interception d'identifiants."
+
+Set-GPRegistryValue -Name $GpoName `
+    -Key "HKLM\Software\Policies\Microsoft\Windows NT\DNSClient" `
+    -ValueName "EnableMulticast" `
+    -Type DWord `
+    -Value 0
+
+New-GPLink -Name $GpoName -Target $OuTarget -LinkEnabled Yes
+
+Write-Host "GPO LLMNR créée et liée au domaine GRIFFON.LOCAL"

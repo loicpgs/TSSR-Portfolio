@@ -1,0 +1,19 @@
+Import-Module ActiveDirectory
+
+Write-Host "=== Domaine ==="
+Get-ADDomain | Select-Object DNSRoot, NetBIOSName, DomainMode
+
+Write-Host "=== Contrôleur de domaine ==="
+Get-ADDomainController | Select-Object HostName, IPv4Address, Site
+
+Write-Host "=== OU Griffon ==="
+Get-ADOrganizationalUnit -Filter * | Select-Object Name, DistinguishedName
+
+Write-Host "=== Groupes Griffon ==="
+Get-ADGroup -Filter "Name -like 'GG_*' -or Name -like 'DL_*'" | Select-Object Name, GroupScope
+
+Write-Host "=== Utilisateurs Griffon ==="
+Get-ADUser -Filter * -Properties Department | Select-Object Name, SamAccountName, Enabled
+
+Write-Host "=== GPO existantes ==="
+Get-GPO -All | Select-Object DisplayName, CreationTime, ModificationTime
