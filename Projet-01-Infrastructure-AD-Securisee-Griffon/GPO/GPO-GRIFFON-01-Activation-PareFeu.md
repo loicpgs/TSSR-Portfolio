@@ -1,146 +1,128 @@
-GPO-GRIFFON-01-Activation-PareFeu
-Présentation
+# GPO-GRIFFON-01-Activation-PareFeu
+
+## Présentation
 
 Dans le cadre du projet Griffon, une stratégie de groupe a été mise en place afin d'activer et de configurer automatiquement le Pare-feu Windows sur l'ensemble des postes intégrés au domaine GRIFFON.LOCAL.
 
 Le pare-feu constitue l'une des premières lignes de défense d'un système d'information. Il permet de contrôler les communications réseau entrantes et sortantes afin de limiter les risques d'accès non autorisés aux équipements du domaine.
 
-L'objectif de cette stratégie est de garantir que tous les postes bénéficient d'un niveau de protection homogène, indépendamment des actions réalisées par les utilisateurs.
+L'objectif de cette stratégie est de garantir que tous les postes bénéficient d'un niveau de protection homogène et conforme aux bonnes pratiques de sécurité.
 
-Cette approche permet également à l'administrateur de conserver un contrôle centralisé sur les paramètres de sécurité réseau des ordinateurs du domaine.
+---
 
-Contexte
+## Contexte
 
-Dans une infrastructure Active Directory, les postes utilisateurs sont constamment exposés à différents types de communications réseau :
+Les postes utilisateurs communiquent quotidiennement avec de nombreux équipements du réseau :
 
-échanges entre postes du domaine ;
-accès aux partages réseau ;
-accès aux applications métiers ;
-connexions Internet ;
-services d'administration.
+* Contrôleurs de domaine ;
+* Serveurs de fichiers ;
+* Serveurs applicatifs ;
+* Postes utilisateurs ;
+* Services Internet.
 
-Sans politique de filtrage centralisée, un utilisateur pourrait désactiver manuellement le pare-feu ou modifier sa configuration, augmentant ainsi la surface d'attaque du système d'information.
+Sans mécanisme de filtrage, ces communications peuvent être exploitées pour réaliser des scans réseau, des tentatives d'intrusion ou des mouvements latéraux.
 
-La mise en œuvre d'une GPO dédiée permet donc d'assurer le maintien permanent des paramètres de sécurité définis par l'administrateur.
+Cette stratégie permet de centraliser la configuration du pare-feu et d'assurer son activation permanente sur les postes du domaine.
 
-Paramètres configurés
+---
 
-La stratégie active le Pare-feu Windows Defender sur les trois profils réseau disponibles :
+## Paramètres configurés
 
-Profil Domaine
+La stratégie applique :
 
-Ce profil est appliqué lorsque l'ordinateur est connecté au domaine Active Directory.
+* Activation du pare-feu Windows Defender ;
+* Activation du profil Domaine ;
+* Activation du profil Privé ;
+* Activation du profil Public ;
+* Blocage des connexions entrantes non autorisées ;
+* Journalisation des événements liés au pare-feu.
 
-Paramètres :
+---
 
-Pare-feu activé ;
-Blocage des connexions entrantes non sollicitées ;
-Autorisation des communications nécessaires au fonctionnement du domaine ;
-Journalisation des événements de sécurité.
-Profil Privé
+## Risques traités
 
-Ce profil est utilisé sur les réseaux internes considérés comme fiables.
+Cette stratégie permet de réduire :
 
-Paramètres :
+* Les accès non autorisés ;
+* Les scans de ports ;
+* Les tentatives d'intrusion ;
+* La propagation de logiciels malveillants ;
+* Les mouvements latéraux au sein du réseau.
 
-Pare-feu activé ;
-Filtrage des communications ;
-Contrôle des connexions entrantes.
-Profil Public
+---
 
-Ce profil est appliqué lorsque le poste est connecté à un réseau non approuvé.
+## Mise en œuvre
 
-Paramètres :
+La stratégie a été créée dans :
 
-Pare-feu activé ;
-Blocage renforcé des connexions entrantes ;
-Protection maximale contre les accès externes.
-Risques traités
-
-Cette stratégie permet de réduire plusieurs risques de sécurité :
-
-Accès non autorisés
-
-Le pare-feu bloque les tentatives de connexion provenant d'équipements non autorisés.
-
-Propagation de logiciels malveillants
-
-Certains malwares exploitent les communications réseau pour se propager d'une machine à une autre.
-
-Le filtrage des connexions permet de limiter cette propagation.
-
-Exposition de services inutiles
-
-Des services installés sur un poste peuvent écouter sur différents ports réseau.
-
-Le pare-feu limite l'accès à ces services lorsqu'ils ne sont pas explicitement autorisés.
-
-Attaques réseau
-
-Le pare-feu réduit les risques liés :
-
-aux scans de ports ;
-aux tentatives d'exploitation de vulnérabilités ;
-aux connexions malveillantes ;
-aux mouvements latéraux dans le réseau.
-Mise en œuvre
-
-La stratégie a été créée dans la console :
-
+```text
 Gestion des stratégies de groupe (GPMC)
+```
 
 Nom de la stratégie :
 
+```text
 GPO-GRIFFON-01-Activation-PareFeu
+```
 
 La GPO est liée au domaine :
 
+```text
 griffon.local
+```
 
 afin d'assurer son application sur l'ensemble des postes concernés.
 
-Vérification de l'application
+---
 
-Une fois la stratégie appliquée, plusieurs contrôles peuvent être réalisés.
+## Vérification
 
 Mise à jour des stratégies :
 
+```powershell
 gpupdate /force
+```
 
-Vérification de l'application :
+Contrôle des GPO appliquées :
 
+```powershell
 gpresult /r
+```
 
 Vérification de l'état du pare-feu :
 
+```powershell
 Get-NetFirewallProfile
+```
 
 Résultat attendu :
 
+```text
 Domain  : True
 Private : True
 Public  : True
-Bénéfices
+```
 
-La mise en œuvre de cette stratégie apporte plusieurs avantages :
+---
 
-protection homogène de l'ensemble des postes ;
-administration centralisée de la sécurité réseau ;
-réduction des risques d'intrusion ;
-limitation des mouvements latéraux ;
-meilleure maîtrise des communications réseau ;
-conformité avec les bonnes pratiques Microsoft ;
-amélioration du niveau de sécurité global du domaine.
-Application dans le projet Griffon
+## Bénéfices
 
-Cette GPO constitue l'un des premiers mécanismes de sécurité déployés dans l'infrastructure Active Directory GRIFFON.LOCAL.
+* Protection homogène des postes ;
+* Réduction de la surface d'attaque ;
+* Contrôle des communications réseau ;
+* Administration centralisée ;
+* Renforcement de la sécurité globale du domaine.
 
-Elle participe directement au durcissement des postes de travail et complète les autres mesures de sécurité mises en œuvre dans le projet telles que :
+---
 
-la désactivation de SMBv1 ;
-la désactivation de LLMNR ;
-l'activation de Windows Defender ;
-la journalisation PowerShell ;
-les remédiations CIS.
+## Application dans le projet Griffon
 
-L'ensemble de ces mesures contribue à renforcer la sécurité globale de l'environnement et à appliquer le principe de défense en profondeur au sein du domaine Active Directory.
+Cette stratégie constitue l'une des premières mesures de sécurisation mises en œuvre dans l'infrastructure Active Directory.
+
+Elle complète les autres stratégies de sécurité telles que la désactivation de SMBv1, la désactivation de LLMNR ou encore l'activation de Windows Defender.
+
+---
+
+## Résultat
+
+Le pare-feu Windows est activé et administré automatiquement sur l'ensemble des postes du domaine GRIFFON.LOCAL.
