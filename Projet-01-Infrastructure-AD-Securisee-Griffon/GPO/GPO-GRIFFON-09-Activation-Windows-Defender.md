@@ -1,96 +1,140 @@
-GPO-GRIFFON-09-Activation-Windows-Defender
-Présentation
+# GPO-GRIFFON-09-Activation-Windows-Defender
 
-Dans le cadre du projet Griffon, une stratégie de groupe a été déployée afin d'assurer l'activation et la configuration centralisée de Microsoft Defender sur l'ensemble des postes intégrés au domaine GRIFFON.LOCAL.
+## Présentation
+
+Dans le cadre du projet Griffon, une stratégie de groupe a été mise en œuvre afin d'assurer l'activation et la configuration centralisée de Microsoft Defender sur l'ensemble des postes intégrés au domaine GRIFFON.LOCAL.
 
 Microsoft Defender constitue la solution antivirus native de Windows. Son rôle est de détecter, bloquer et supprimer les menaces susceptibles de compromettre la sécurité des systèmes et des données de l'entreprise.
 
-La centralisation de sa configuration via une GPO permet de garantir un niveau de protection homogène sur l'ensemble du parc informatique et d'éviter qu'un utilisateur ne modifie ou désactive certains paramètres de sécurité.
+L'objectif de cette stratégie est de garantir un niveau de protection homogène sur l'ensemble du parc informatique tout en conservant une administration centralisée des paramètres de sécurité.
 
-Contexte
+---
 
-Les postes de travail représentent l'une des principales cibles des cyberattaques. Les menaces peuvent prendre différentes formes :
+## Contexte
 
-virus ;
-chevaux de Troie ;
-ransomwares ;
-logiciels espions ;
-scripts malveillants ;
-téléchargements infectés.
+Les postes utilisateurs représentent une cible privilégiée pour de nombreuses cybermenaces.
 
-Une protection antivirus active et correctement configurée constitue donc une mesure essentielle dans une stratégie de défense en profondeur.
+Les risques peuvent prendre différentes formes :
 
-La mise en œuvre de cette GPO vise à garantir que chaque poste du domaine bénéficie d'une protection permanente contre ces menaces.
+* Virus ;
+* Chevaux de Troie ;
+* Logiciels espions ;
+* Ransomwares ;
+* Scripts malveillants ;
+* Téléchargements infectés.
 
-Paramètres configurés
+Sans solution de protection active, un poste compromis peut rapidement devenir un point d'entrée permettant à un attaquant d'accéder à d'autres ressources du domaine.
 
-La stratégie applique notamment :
+La mise en œuvre d'une protection antivirus centralisée constitue donc une mesure essentielle pour assurer la sécurité de l'infrastructure Active Directory.
 
-Activation de Microsoft Defender ;
-Activation de la protection en temps réel ;
-Activation de la surveillance comportementale ;
-Analyse automatique des fichiers ;
-Contrôle des programmes exécutés ;
-Protection contre les logiciels malveillants ;
-Mise à jour automatique des signatures antivirus.
-Risques traités
+---
+
+## Paramètres configurés
+
+La stratégie applique :
+
+* Activation de Microsoft Defender ;
+* Activation de la protection en temps réel ;
+* Analyse automatique des fichiers ;
+* Surveillance comportementale ;
+* Contrôle des programmes exécutés ;
+* Mise à jour automatique des signatures antivirus ;
+* Protection contre les logiciels malveillants.
+
+---
+
+## Risques traités
 
 Cette stratégie permet de réduire :
 
-les infections par logiciels malveillants ;
-les attaques de type ransomware ;
-l'exécution de fichiers malveillants ;
-les téléchargements dangereux ;
-la propagation de menaces au sein du domaine.
-Mise en œuvre
+* Les infections virales ;
+* Les attaques par ransomware ;
+* Les téléchargements malveillants ;
+* L'exécution de fichiers dangereux ;
+* La propagation des menaces au sein du domaine ;
+* Les compromissions de postes utilisateurs.
 
-La stratégie a été créée dans la console :
+---
 
+## Mise en œuvre
+
+La stratégie a été créée dans :
+
+```text
 Gestion des stratégies de groupe (GPMC)
+```
 
 Nom de la stratégie :
 
+```text
 GPO-GRIFFON-09-Activation-Windows-Defender
+```
 
-La GPO est liée au domaine Active Directory afin de garantir l'application des paramètres sur l'ensemble des postes concernés.
+La GPO est liée au domaine :
 
-Vérification
+```text
+griffon.local
+```
 
-Après application de la stratégie, plusieurs contrôles peuvent être réalisés.
+afin d'assurer son application automatique sur l'ensemble des postes concernés.
+
+---
+
+## Vérification
 
 Mise à jour des stratégies :
 
+```powershell
 gpupdate /force
+```
+
+Contrôle des GPO appliquées :
+
+```powershell
+gpresult /r
+```
 
 Vérification de l'état de Defender :
 
+```powershell
 Get-MpComputerStatus
+```
 
 Résultat attendu :
 
+```text
 AMServiceEnabled : True
 AntivirusEnabled : True
 RealTimeProtectionEnabled : True
+```
 
 Vérification des mises à jour :
 
+```powershell
 Update-MpSignature
-Bénéfices
+```
 
-La mise en œuvre de cette stratégie apporte plusieurs avantages :
+---
 
-protection continue des postes ;
-détection automatique des menaces ;
-administration centralisée ;
-homogénéité de la configuration antivirus ;
-réduction du risque de compromission ;
-amélioration du niveau de sécurité global du domaine.
-Application dans le projet Griffon
+## Bénéfices
 
-Cette stratégie complète les autres mesures de sécurité mises en œuvre dans l'infrastructure Active Directory telles que le pare-feu Windows, la désactivation de SMBv1 et la désactivation de LLMNR.
+* Protection continue des postes ;
+* Détection automatique des menaces ;
+* Administration centralisée ;
+* Réduction du risque de compromission ;
+* Homogénéité de la configuration antivirus ;
+* Amélioration de la sécurité globale du domaine.
 
-Elle participe à la protection des postes utilisateurs et constitue un élément essentiel de la politique de sécurité du domaine GRIFFON.LOCAL.
+---
 
-Résultat
+## Application dans le projet Griffon
+
+Cette stratégie complète les autres mécanismes de sécurité mis en œuvre dans l'infrastructure Active Directory, notamment le pare-feu Windows, la désactivation de SMBv1 et la désactivation de LLMNR.
+
+Elle participe activement à la protection des postes utilisateurs et contribue à la mise en place d'une stratégie de défense en profondeur au sein du domaine GRIFFON.LOCAL.
+
+---
+
+## Résultat
 
 L'ensemble des postes du domaine dispose désormais d'une protection antivirus active, administrée de manière centralisée et conforme aux bonnes pratiques de sécurisation des environnements Microsoft.
